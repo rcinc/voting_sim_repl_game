@@ -21,7 +21,7 @@ class VoterSim
   def display_choices
       puts <<-END
       "Please select from the following choices:
-      (C)reate, (L)ist, (U)pdate, or start (V)oter simulation."
+      (C)reate, (L)ist, (U)pdate, (V)oter simulation, or (E)xit"
       END
   end
 
@@ -61,18 +61,28 @@ class VoterSim
         "Which kind of character would you like to update"
         (C)andidate or (V)oter
         END
-
+        group_select = gets.chomp.downcase
+          case group_select
+          when "c"
+            list_candidate
+            update_candidate_name
+          when "v"
+            list_voter
+            update_voter_name
+          end
       when "v"
         campaign = Campaign.new(@candidate_array, @voter_array)
         campaign.voter_choice
         campaign.tally_votes
         campaign.election_winner
+      when "e"
+        exit_game
       end
   end
 
   def create_candidate
     puts "What is your name"
-    name = gets.chomp
+    name = gets.chomp.capitalize
     puts <<-END
     What is your party affiliation:
     (D)emocrat or (R)epublican
@@ -89,7 +99,7 @@ class VoterSim
 
   def create_voter
     puts "what is your name?"
-    name = gets.chomp
+    name = gets.chomp.capitalize
     puts <<-END
     Which party do you associate your politics with?
     (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
@@ -131,6 +141,78 @@ class VoterSim
   def spacer
     puts " "
   end
+
+  def update_candidate_name
+    puts "Enter name exactly as shown"
+    candidate_name = gets.chomp.capitalize
+    @candidate_array.each do |c|
+    if c.name == candidate_name
+        puts "I found it, please enter new name"
+        new_name = gets.chomp
+        puts <<-END
+        What is your new party affiliation:
+        (D)emocrat or (R)epublican
+        END
+        party = gets.chomp.downcase
+        case party
+        when "d"
+          c.party = "Democrat"
+        when "r"
+          c.party = "Republican"
+        end
+        c.name = new_name
+        puts "You have updated the following candidate"
+        spacer
+        print c.name.capitalize + "-"
+        puts c.party
+      else
+        puts "That candidate does not exist, press enter to be directed to main menu"
+        main_menu_user_choice
+    end
+  end
+  end
+
+  def exit_game
+    puts "Thank you for running our voting sim, goodbye"
+    exit(0)
+  end
+  def update_voter_name
+    puts "Enter name exactly as shown"
+    voter_name = gets.chomp.capitalize
+    @voter_array.each do |v|
+    if v.name == voter_name
+        puts "I found it, please enter new name"
+        new_name = gets.chomp
+        puts <<-END
+         "Enter new Political view"
+         Please select the letter that reflects your political views?
+        (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
+        END
+        new_politics = gets.chomp.downcase
+        case new_politics
+        when "p"
+          v.politics =  "Progressive"
+        when "c"
+          v.politics = "Conservative"
+        when "l"
+          v.politics = "Libertarian"
+        when "m"
+          v.politics = "Massachusetts Democrat"
+        when "i"
+          v.politics = "Independent"
+        end
+        v.name = new_name
+        puts "You have updated the following voter"
+        spacer
+        print v.name.capitalize + "-"
+        puts v.politics
+      else
+        puts "That voter does not exist, you are being directed to main menu"
+        main_menu_user_choice
+    end
+    end
+  end
+
   def start
   while true
     # start = VoterSim.new
