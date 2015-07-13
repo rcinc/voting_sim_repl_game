@@ -27,14 +27,32 @@ class VoterSim
 
   def main_menu_user_choice
       user_choice = gets.chomp.downcase
+      while  !(user_choice == "l") && !(user_choice == "c") && !(user_choice == "u") && !(user_choice == "v") && !(user_choice == "e")
+        puts "Invalid Selection"
+        spacer
+        display_choices
+        user_choice = gets.chomp.downcase
+      end
       case user_choice
       when "c"
-        puts <<-END"What would you like to create"
+        puts "What would you like to create?"
+        spacer
+        puts <<-END
         Select
         (C) Candidate
         (V) Voter
         END
         character_choice = gets.chomp.downcase
+        while  !(character_choice == "c") && !(character_choice == "v")
+          puts "Invalid Selection"
+          spacer
+          puts <<-END"What would you like to create"
+          Select
+          (C) Candidate
+          (V) Voter
+          END
+          character_choice = gets.chomp.downcase
+        end
           case character_choice
           when "c"
             create_candidate
@@ -48,6 +66,15 @@ class VoterSim
         (C)andidate list or (V)oter list
         END
         user_list = gets.chomp.downcase
+        while  !(user_list == "c") && !(user_list == "v")
+          puts "Invalid Selection"
+          spacer
+          puts <<-END
+          What list what you like to view
+          (C)andidate list or (V)oter list
+          END
+          user_list = gets.chomp.downcase
+        end
         case user_list
         when "c"
           spacer
@@ -62,6 +89,15 @@ class VoterSim
         (C)andidate or (V)oter
         END
         group_select = gets.chomp.downcase
+        while  !(group_select == "c") && !(group_select == "v")
+          puts "Invalid Selection"
+          spacer
+          puts <<-END
+          "Which kind of character would you like to update"
+          (C)andidate or (V)oter
+          END
+          group_select = gets.chomp.downcase
+        end
           case group_select
           when "c"
             list_candidate
@@ -81,13 +117,24 @@ class VoterSim
   end
 
   def create_candidate
+    spacer
     puts "What is your name"
     name = gets.chomp.capitalize
+    spacer
     puts <<-END
     What is your party affiliation:
     (D)emocrat or (R)epublican
     END
     party = gets.chomp.downcase
+    while  !(party == "d") && !(party == "r")
+      puts "Invalid Selection"
+      spacer
+      puts <<-END
+      What is your party affiliation:
+      (D)emocrat or (R)epublican
+      END
+      party = gets.chomp.downcase
+    end
     case party
     when "d"
       name = Candidate.new(name,"Democrat")
@@ -98,13 +145,24 @@ class VoterSim
   end
 
   def create_voter
+    spacer
     puts "what is your name?"
     name = gets.chomp.capitalize
+    spacer
     puts <<-END
     Which party do you associate your politics with?
     (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
     END
     politics = gets.chomp.downcase
+    while  !(politics == "p") && !(politics == "c") && !(politics == "l") && !(politics == "m") && !(politics == "i")
+      puts "Invalid Selection"
+      spacer
+      puts <<-END
+      Which party do you associate your politics with?
+      (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
+      END
+      politics = gets.chomp.downcase
+    end
     case politics
     when "p"
       name = Voter.new(name, "Progressive")
@@ -143,7 +201,7 @@ class VoterSim
   end
 
   def update_candidate_name
-    puts "Enter name exactly as shown"
+    puts "Enter name only, exactly as shown"
     candidate_name = gets.chomp.capitalize
     @candidate_array.each do |c|
     if c.name == candidate_name
@@ -154,6 +212,15 @@ class VoterSim
         (D)emocrat or (R)epublican
         END
         party = gets.chomp.downcase
+        while  !(party == "d") && !(party == "r")
+          puts "Invalid Selection"
+          spacer
+          puts <<-END
+          What is your new party affiliation:
+          (D)emocrat or (R)epublican
+          END
+          party = gets.chomp.downcase
+        end
         case party
         when "d"
           c.party = "Democrat"
@@ -189,6 +256,16 @@ class VoterSim
         (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
         END
         new_politics = gets.chomp.downcase
+        while  !(new_politics == "p") && !(new_politics == "c") && !(new_politics == "l") && !(new_politics == "m") && !(new_politics == "i")
+          puts "Invalid Selection"
+          spacer
+          puts <<-END
+           "Enter new Political view"
+           Please select the letter that reflects your political views?
+          (P)rogressive, (C)onservative, (L)ibertarian, (M)assachusetts Democrat, or (I)ndependent
+          END
+          new_politics = gets.chomp.downcase
+        end
         case new_politics
         when "p"
           v.politics =  "Progressive"
@@ -216,8 +293,11 @@ class VoterSim
   def start
   while true
     # start = VoterSim.new
+    spacer
     intro
+    spacer
     display_choices
+    spacer
     main_menu_user_choice
     spacer
   end
